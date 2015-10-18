@@ -10,10 +10,7 @@ namespace UmbraChinaCK2
     {
         static void Main(string[] args)
         {
-            LoadChinaTitleFile();
-            LoadHolderFile();
-            GenerateHistory();
-            WriteIntoFile();
+            LoadTitles.LoadTitlesFromFile("C:/Users/u0950711/Documents/Umbra-Spherae-versions/Umbra Spherae/common/landed_titles/US_China.txt");
         }
     }
 }
