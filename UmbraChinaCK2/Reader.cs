@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,7 @@ namespace UmbraChinaCK2
 
         static public bool IsToken(char i_char)
         {
-            return (i_char == '=' || i_char == '{' || i_char == '}');
+            return (i_char == '=' || i_char == '{' || i_char == '}' || i_char == '"');
         }
 
         static public bool ReadAToken(StringReader i_sr, char i_token)
@@ -62,11 +63,11 @@ namespace UmbraChinaCK2
             }
             catch (FormatException)
             {
-                Console.WriteLine("Bad Time Format");
+                Debug.Assert(false, "Bad Time Format");
             }
             catch (OverflowException)
             {
-                Console.WriteLine("Bad Time Format");
+                Debug.Assert(false, "Bad Time Format");
             }
             return true;
         }
@@ -96,6 +97,63 @@ namespace UmbraChinaCK2
                 ch = (char)i_sr.Peek();
             }
             return true;
+        }
+
+        static public bool ReadAString(StringReader i_sr, out string key)
+        {
+            key = "";
+            if (!ReadAToken(i_sr, '"'))
+            {
+                Debug.Assert(false, "A Token '\"' Expected");
+                return false;
+            }
+            char ch = (char)i_sr.Peek();
+            while (!IsToken(ch))
+            {
+                key += (char)i_sr.Read();
+                ch = (char)i_sr.Peek();
+            }
+            if (!ReadAToken(i_sr, '"'))
+            {
+                Debug.Assert(false, "A Token '\"' Expected");
+                return false;
+            }
+            return (key.Length > 0);
+        }
+
+        static public bool ReadValue(StringReader i_sr)
+        {
+            Reader.ReadSpaces(i_sr);
+            if (i_sr.Peek() == '{')
+            {
+                int layer = 0;
+                do
+                {
+                    if (i_sr.Peek() == '{')
+                    {
+                        layer++;
+                    }
+                    else if (i_sr.Peek() == '}')
+                    {
+                        layer--;
+                    }
+                    i_sr.Read();
+                }
+                while (layer > 0 && i_sr.Peek() != -1);
+                if (i_sr.Peek() == '}')
+                {
+                    i_sr.Read();
+                }
+            }
+            else
+            {
+                char ch;
+                while (i_sr.Peek() != -1 && !Reader.IsEmptySpace(ch = (char)i_sr.Peek()) && ch != '#')
+                {
+                    i_sr.Read();
+                }
+            }
+            return i_sr.Peek() != -1;
         }
     }
 }

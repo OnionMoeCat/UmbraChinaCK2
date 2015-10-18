@@ -6,15 +6,17 @@ using System.Threading.Tasks;
 
 namespace UmbraChinaCK2
 {
-    class Family
+    class Dynasty
     {
+        public int id;
         public string name;
+        public string culture;
     }
     class Name
     {
         public string first;
         public string middle;
-        public Family family;
+        public Dynasty dynasty;
     }
     class Person
     {
@@ -25,11 +27,11 @@ namespace UmbraChinaCK2
         public Time born;
         public Time die;
         public Name name;
-        public Family family
+        public Dynasty dynasty
         {
             get
             {
-                return name.family;
+                return name.dynasty;
             }
         }
     }

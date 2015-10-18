@@ -44,6 +44,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="China.cs" />
+    <Compile Include="GenerateDynasties.cs" />
+    <Compile Include="LoadDynasties.cs" />
+    <Compile Include="LoadHistories.cs" />
     <Compile Include="LoadTitles.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Program.cs" />

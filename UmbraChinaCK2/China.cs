@@ -9,6 +9,7 @@ namespace UmbraChinaCK2
     class China
     {
         static public List<Title> titles = new List<Title>();
-        static public List<Person> people = new List<Person>(); 
+        static public List<Person> people = new List<Person>();
+        static public List<Dynasty> dynasties = new List<Dynasty>();
     }
 }

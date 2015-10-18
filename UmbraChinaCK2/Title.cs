@@ -23,6 +23,7 @@ namespace UmbraChinaCK2
         public List<Title> vassals = new List<Title>();
         public Title liege;
         public SortedList<Time, Person> history = new SortedList<Time, Person>();
+        public Dictionary<Time, string> times = new Dictionary<Time, string>();
         public string name;
         public Title captial
         {

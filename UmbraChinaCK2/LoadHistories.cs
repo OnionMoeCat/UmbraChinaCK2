@@ -8,25 +8,37 @@ using System.Threading.Tasks;
 
 namespace UmbraChinaCK2
 {
-    class LoadTitles
+    class LoadHistories
     {
-        static string rootTitle = "e_china";
-        static public bool LoadTitlesFromFile(string i_path)
+        static private string liege = "liege";
+        static private string rootTitle = "e_china";
+        static public bool LoadHistoriesFromFolder(string i_path)
         {
-            if (!File.Exists(i_path))
+            if (!Directory.Exists(i_path))
             {
                 return false;
             }
 
             try
-            {   // Open the text file using a stream reader.
-                using (StreamReader sr = new StreamReader(i_path, System.Text.Encoding.GetEncoding("ISO8859-1")))
+            {   
+                foreach(Title title in China.titles)
                 {
-                    // Read the stream to a string, and write the string to the console.
-                    String line = sr.ReadToEnd();
-                    if (!ParseTitleFile(line))
+                    if (title.TitleType != TitleType.Baron && title.TitleType != TitleType.Emporer )
                     {
-                        return false;
+                        string path = Path.Combine(i_path, title.name + ".txt");
+                        if (File.Exists(path))
+                        {
+                            // Open the text file using a stream reader.
+                            using (StreamReader sr = new StreamReader(path, System.Text.Encoding.GetEncoding("ISO8859-1")))
+                            {
+                                // Read the stream to a string, and write the string to the console.
+                                String line = sr.ReadToEnd();
+                                if (!ParseHistoryFile(line, title))
+                                {
+                                    return false;
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -38,17 +50,17 @@ namespace UmbraChinaCK2
 
             return true;
         }
-        static bool ParseTitleFile(string i_content)
+        static bool ParseHistoryFile(string i_content, Title title)
         {
             using (StringReader sr = new StringReader(i_content))
             {
                 while (sr.Peek() != -1)
                 {
                     Reader.ReadSpaces(sr);
-                    string key;
-                    if (!Reader.ReadAKey(sr, out key))
+                    Time time;
+                    if (!Reader.ReadATime(sr, out time))
                     {
-                        Debug.Assert(false, "A key expected");
+                        Debug.Assert(false, "A time expected");
                         return false;
                     }
                     Reader.ReadSpaces(sr);
@@ -58,24 +70,13 @@ namespace UmbraChinaCK2
                         return false;
                     }
                     Reader.ReadSpaces(sr);
-                    if (key == rootTitle)
-                    {
-                        Title root = new Title();
-                        root.name = rootTitle;
-                        China.titles.Add(root);
-                        ParseTitle(sr, root);
-                    }
-                    else
-                    {
-                        Reader.ReadValue(sr);
-                    }
+                    ParseHistory(sr, title, time);
                     Reader.ReadSpaces(sr);
                 }
             }
             return true;
         }
-
-        static bool ParseTitle(StringReader i_sr, Title i_parent)
+        static bool ParseHistory(StringReader i_sr, Title title, Time time)
         {
             Reader.ReadSpaces(i_sr);
             if (!Reader.ReadAToken(i_sr, '{'))
@@ -101,13 +102,26 @@ namespace UmbraChinaCK2
                     return false;
                 }
                 Reader.ReadSpaces(i_sr);
-                if (Title.IsTitle(key))
+                if (key == liege)
                 {
-                    Title title = new Title();
-                    title.name = key;
-                    Title.BuildVassal(i_parent, title);
-                    China.titles.Add(title);
-                    ParseTitle(i_sr, title);
+                    if (i_sr.Peek() == '"')
+                    {
+                        string strliege;
+                        if (!Reader.ReadAString(i_sr, out strliege))
+                        {
+                            Debug.Assert(false, "A string expected");
+                        }
+                        title.times.Add(time, strliege);
+                    }
+                    else
+                    {
+                        string strliege;
+                        if (!Reader.ReadAKey(i_sr, out strliege))
+                        {
+                            Debug.Assert(false, "A string expected");
+                        }
+                        title.times.Add(time, "");
+                    }
                 }
                 else
                 {
