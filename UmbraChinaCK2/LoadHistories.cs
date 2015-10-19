@@ -11,7 +11,7 @@ namespace UmbraChinaCK2
     class LoadHistories
     {
         static private string liege = "liege";
-        static private string rootTitle = "e_china";
+        static private string rootTitle = "e_china";    
         static public bool LoadHistoriesFromFolder(string i_path)
         {
             if (!Directory.Exists(i_path))
@@ -52,15 +52,16 @@ namespace UmbraChinaCK2
         }
         static bool ParseHistoryFile(string i_content, Title title)
         {
+            DateTime doom = new DateTime(1337,1,1);
             using (StringReader sr = new StringReader(i_content))
             {
                 while (sr.Peek() != -1)
                 {
                     Reader.ReadSpaces(sr);
-                    Time time;
-                    if (!Reader.ReadATime(sr, out time))
+                    DateTime DateTime;
+                    if (!Reader.ReadADateTime(sr, out DateTime))
                     {
-                        Debug.Assert(false, "A time expected");
+                        Debug.Assert(false, "A DateTime expected");
                         return false;
                     }
                     Reader.ReadSpaces(sr);
@@ -70,13 +71,15 @@ namespace UmbraChinaCK2
                         return false;
                     }
                     Reader.ReadSpaces(sr);
-                    ParseHistory(sr, title, time);
+                    ParseHistory(sr, title, DateTime);
                     Reader.ReadSpaces(sr);
                 }
+                
+                title.DateTimes.Add(doom, "");
             }
             return true;
         }
-        static bool ParseHistory(StringReader i_sr, Title title, Time time)
+        static bool ParseHistory(StringReader i_sr, Title title, DateTime DateTime)
         {
             Reader.ReadSpaces(i_sr);
             if (!Reader.ReadAToken(i_sr, '{'))
@@ -111,7 +114,7 @@ namespace UmbraChinaCK2
                         {
                             Debug.Assert(false, "A string expected");
                         }
-                        title.times.Add(time, strliege);
+                        title.DateTimes.Add(DateTime, strliege);
                     }
                     else
                     {
@@ -120,7 +123,7 @@ namespace UmbraChinaCK2
                         {
                             Debug.Assert(false, "A string expected");
                         }
-                        title.times.Add(time, "");
+                        title.DateTimes.Add(DateTime, "");
                     }
                 }
                 else

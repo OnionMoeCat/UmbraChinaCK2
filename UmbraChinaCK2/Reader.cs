@@ -40,9 +40,9 @@ namespace UmbraChinaCK2
             }
             return (key.Length > 0);
         }
-        static public bool ReadATime(StringReader i_sr, out Time time)
+        static public bool ReadADateTime(StringReader i_sr, out DateTime DateTime)
         {
-            time = new Time();
+            DateTime = new DateTime();
             string key = "";
             char ch = (char)i_sr.Peek();
             while (!IsEmptySpace(ch) && !IsToken(ch))
@@ -57,17 +57,15 @@ namespace UmbraChinaCK2
             }
             try
             {
-                time.year = Int32.Parse(nums[0]);
-                time.month = Int32.Parse(nums[1]);
-                time.day = Int32.Parse(nums[2]);
+                DateTime = new DateTime(Int32.Parse(nums[0]), Int32.Parse(nums[1]), Int32.Parse(nums[2]));
             }
             catch (FormatException)
             {
-                Debug.Assert(false, "Bad Time Format");
+                Debug.Assert(false, "Bad DateTime Format");
             }
             catch (OverflowException)
             {
-                Debug.Assert(false, "Bad Time Format");
+                Debug.Assert(false, "Bad DateTime Format");
             }
             return true;
         }

@@ -22,8 +22,8 @@ namespace UmbraChinaCK2
         static Dictionary<char, TitleType> charToTitleType = new Dictionary<char, TitleType> { { 'b', TitleType.Baron }, { 'c', TitleType.Count }, { 'd', TitleType.Duke }, { 'k', TitleType.King }, { 'e', TitleType.Emporer } };
         public List<Title> vassals = new List<Title>();
         public Title liege;
-        public SortedList<Time, Person> history = new SortedList<Time, Person>();
-        public Dictionary<Time, string> times = new Dictionary<Time, string>();
+        public SortedList<DateTime, Person> history = new SortedList<DateTime, Person>();
+        public SortedList<DateTime, string> DateTimes = new SortedList<DateTime, string>();
         public string name;
         public Title captial
         {

@@ -11,13 +11,13 @@ namespace UmbraChinaCK2
     {
         static void Main(string[] args)
         {
-            string basePath = "C:/Users/张振学/Documents/CK2Mods/Umbra-Spherae-versions";
+            string basePath = "C:/Users/u0950711/Documents/Umbra-Spherae-versions";
             LoadTitles.LoadTitlesFromFile(Path.Combine(basePath, "Umbra Spherae/common/landed_titles/US_China.txt"));
             LoadHistories.LoadHistoriesFromFolder(Path.Combine(basePath, "Umbra Spherae/history/titles"));
             LoadDynasties.LoadDynastiesFromFile(Path.Combine(basePath, "Umbra Spherae/common/dynasties/china_pinyin.txt"));
-            GenerateDynasties.Gen();
-            GeneratePeople.GeneratePeople();
-            WriteOut.WriteOut();
+            GenerateDynasties.GenCount();
+            //GenerateDynasties.GenDukeAndKing();
+            //WriteOut.WriteOut();
         }
     }
 }
