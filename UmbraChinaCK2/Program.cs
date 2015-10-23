@@ -15,9 +15,13 @@ namespace UmbraChinaCK2
             LoadTitles.LoadTitlesFromFile(Path.Combine(basePath, "Umbra Spherae/common/landed_titles/US_China.txt"));
             LoadHistories.LoadHistoriesFromFolder(Path.Combine(basePath, "Umbra Spherae/history/titles"));
             LoadDynasties.LoadDynastiesFromFile(Path.Combine(basePath, "Umbra Spherae/common/dynasties/china_pinyin.txt"));
+            Process.CalculateInterval();
             GenerateDynasties.GenCount();
-            //GenerateDynasties.GenDukeAndKing();
-            //WriteOut.WriteOut();
+            GenerateDynasties.GenDuke();
+            GenerateDynasties.GenKing();
+            WriteOut.OutputTitles("C:/Users/u0950711/Documents/UmbraChinaCK2/Output/titles");
+            WriteOut.OutputDynasties("C:/Users/u0950711/Documents/UmbraChinaCK2/Output/dynasties");
+            WriteOut.OutputPeople("C:/Users/u0950711/Documents/UmbraChinaCK2/Output/characters");
         }
     }
 }

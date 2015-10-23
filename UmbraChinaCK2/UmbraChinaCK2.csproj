@@ -49,11 +49,13 @@
     <Compile Include="LoadHistories.cs" />
     <Compile Include="LoadTitles.cs" />
     <Compile Include="Person.cs" />
+    <Compile Include="Process.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reader.cs" />
     <Compile Include="Rnd.cs" />
     <Compile Include="Title.cs" />
+    <Compile Include="WriteOut.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

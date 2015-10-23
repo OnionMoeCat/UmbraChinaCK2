@@ -27,24 +27,96 @@ namespace UmbraChinaCK2
             {
                 if (title.TitleType == TitleType.Count)
                 {
-                    bool isOn = false;
-                    DateTime beginDateTime = new DateTime();                
-                    foreach (KeyValuePair<DateTime, string> entry in title.DateTimes)
+                    foreach (KeyValuePair<DateTime, DateTime> entry in title.Intervals)
                     {
-                        if (entry.Value == rootNode)
-                        {
-                            isOn = true;
-                            beginDateTime = entry.Key;
-                        }
-                        else
-                        {
-                            isOn = false;
-                            GenCharacter(title, beginDateTime, entry.Key);
-                        }
-                    }              
+                        GenCharacter(title, entry.Key, entry.Value);
+                    }   
                 }
             }
             dynastyNum = 0;
+        }
+
+        public static void GenDuke()
+        {
+            DateTime doom = new DateTime(1337, 1, 1);
+            foreach (Title title in China.titles)
+            {
+                if (title.TitleType == TitleType.Duke)
+                {
+                    if (title.captial != null)
+                    {
+                        for (int i = 0; i < title.captial.history.Count; i ++)
+                        {
+                            KeyValuePair<DateTime, Person> current = title.captial.history.ElementAt(i);
+                            if (current.Value.name != null)
+                            {
+                                DateTime beginTime = current.Key;
+                                Person person = current.Value;
+                                DateTime endTime;
+                                if (i == title.captial.history.Count - 1)
+                                {
+                                    endTime = doom;
+                                }
+                                else
+                                {
+                                    endTime = title.captial.history.ElementAt(i + 1).Key;
+                                }
+                                foreach (KeyValuePair<DateTime, DateTime> entry in title.Intervals)
+                                {
+                                    if (Intersect(beginTime, endTime, entry.Key, entry.Value))
+                                    {
+                                        title.history.Add(beginTime, person);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public static void GenKing()
+        {
+            DateTime doom = new DateTime(1337, 1, 1);
+            foreach (Title title in China.titles)
+            {
+                if (title.TitleType == TitleType.King)
+                {
+                    if (title.captial != null)
+                    {
+                        for (int i = 0; i < title.captial.history.Count; i++)
+                        {
+                            KeyValuePair<DateTime, Person> current = title.captial.history.ElementAt(i);
+                            if (current.Value.name != null)
+                            {
+                                DateTime beginTime = current.Key;
+                                Person person = current.Value;
+                                DateTime endTime;
+                                if (i == title.captial.history.Count - 1)
+                                {
+                                    endTime = doom;
+                                }
+                                else
+                                {
+                                    endTime = title.captial.history.ElementAt(i + 1).Key;
+                                }
+                                foreach (KeyValuePair<DateTime, DateTime> entry in title.Intervals)
+                                {
+                                    if (Intersect(beginTime, endTime, entry.Key, entry.Value))
+                                    {
+                                        title.history.Add(beginTime, person);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public static bool Intersect(DateTime beginTime1, DateTime endTime1, DateTime beginTime2, DateTime endTime2)
+        {
+            return !(endTime1 <= beginTime2 || endTime2 <= beginTime1);
         }
 
         public static void GenCharacter(Title title, DateTime i_beginDateTime, DateTime i_endDateTime)
@@ -52,7 +124,7 @@ namespace UmbraChinaCK2
             Dynasty dynasty = GenDynasty();
             DateTime currentDateTime = i_beginDateTime;
             Person father = null;
-            while (currentDateTime <= i_endDateTime)
+            while (currentDateTime < i_endDateTime)
             {
                 int intervalYears = Rnd.rnd.Next(minInterval, maxInterval + 1);
                 DateTime afterTime = currentDateTime.AddYears(intervalYears);

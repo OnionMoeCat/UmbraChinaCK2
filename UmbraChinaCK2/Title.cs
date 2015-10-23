@@ -24,6 +24,8 @@ namespace UmbraChinaCK2
         public Title liege;
         public SortedList<DateTime, Person> history = new SortedList<DateTime, Person>();
         public SortedList<DateTime, string> DateTimes = new SortedList<DateTime, string>();
+        public SortedList<DateTime, string> lieges = new SortedList<DateTime, string>();
+        public SortedList<DateTime, DateTime> Intervals = new SortedList<DateTime, DateTime>();
         public string name;
         public Title captial
         {
