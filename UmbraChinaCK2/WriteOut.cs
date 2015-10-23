@@ -15,7 +15,7 @@ namespace UmbraChinaCK2
         private static string nameStr = "name";
         private static string dynastyStr = "dynasty";
         private static string birthStr = "birth";
-        private static string dieStr = "die";
+        private static string dieStr = "death";
         public static void OutputTitles(string i_folder)
         {
             foreach (Title title in China.titles)
@@ -37,7 +37,7 @@ namespace UmbraChinaCK2
 
         public static void PrintToTitleFile(string i_path, List<KeyValuePair<DateTime, KeyValuePair<string, string>>> i_totalList)
         {
-            i_totalList.Sort();
+            i_totalList.OrderBy(entry=>entry.Key);
             using (System.IO.StreamWriter file = new System.IO.StreamWriter(i_path))
             {
                 foreach (KeyValuePair<DateTime, KeyValuePair<string, string>> entry in i_totalList)

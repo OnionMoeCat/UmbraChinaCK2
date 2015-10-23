@@ -20,6 +20,7 @@ namespace UmbraChinaCK2
         static int maxElectedAge = 50;
         static int maxDeathTime = 80;
         static int adultYear = 16;
+        static string han = "han";
 
         public static void GenCount()
         {            
@@ -143,6 +144,7 @@ namespace UmbraChinaCK2
             Dynasty dynasty = new Dynasty();
             dynasty.name = China.dynasties[index].name;
             dynasty.id = dynastyIdBase + dynastyNum;
+            dynasty.culture = han;
             China.dynasties.Add(dynasty);
             return dynasty;
         }

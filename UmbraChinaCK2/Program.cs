@@ -20,8 +20,8 @@ namespace UmbraChinaCK2
             GenerateDynasties.GenDuke();
             GenerateDynasties.GenKing();
             WriteOut.OutputTitles("C:/Users/u0950711/Documents/UmbraChinaCK2/Output/titles");
-            WriteOut.OutputDynasties("C:/Users/u0950711/Documents/UmbraChinaCK2/Output/dynasties");
-            WriteOut.OutputPeople("C:/Users/u0950711/Documents/UmbraChinaCK2/Output/characters");
+            WriteOut.OutputDynasties("C:/Users/u0950711/Documents/UmbraChinaCK2/Output/dynasties/china_autogen.txt");
+            WriteOut.OutputPeople("C:/Users/u0950711/Documents/UmbraChinaCK2/Output/characters/han_autogen.txt");
         }
     }
 }
