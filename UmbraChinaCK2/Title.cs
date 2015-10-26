@@ -27,6 +27,8 @@ namespace UmbraChinaCK2
         public SortedList<DateTime, string> lieges = new SortedList<DateTime, string>();
         public SortedList<DateTime, DateTime> Intervals = new SortedList<DateTime, DateTime>();
         public string name;
+        public bool fictional;
+        public bool viceroy;
         public Title captial
         {
             get {
@@ -73,6 +75,28 @@ namespace UmbraChinaCK2
                 i_liege.vassals.Add(i_vassal);
                 i_vassal.liege = i_liege;
             }
+        }
+
+        public static Title GetRootTitleString(string i_title)
+        {            
+            Title temp = GetTitleFromString(i_title);
+            while(temp != null && temp.liege != null)
+            {
+                temp = temp.liege;
+            }
+            return temp;
+        }
+
+        public static Title GetTitleFromString(string i_title)
+        {
+            foreach (Title title in China.titles)
+            {
+                if (title.name == i_title)
+                {
+                    return title;
+                }
+            }
+            return null;
         }
     }
 }

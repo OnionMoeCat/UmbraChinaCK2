@@ -29,6 +29,7 @@ namespace UmbraChinaCK2
                         string path = Path.Combine(i_path, title.name + ".txt");
                         if (File.Exists(path))
                         {
+                            title.fictional = false;
                             // Open the text file using a stream reader.
                             using (StreamReader sr = new StreamReader(path, System.Text.Encoding.GetEncoding("ISO8859-1")))
                             {
@@ -40,6 +41,15 @@ namespace UmbraChinaCK2
                                 }
                             }
                         }
+                        else
+                        {
+                            title.fictional = true;
+                        }                    
+                    }
+
+                    if (title.TitleType == TitleType.Duke || title.TitleType == TitleType.King)
+                    {
+                        title.viceroy = true;
                     }
                 }
             }
@@ -123,7 +133,21 @@ namespace UmbraChinaCK2
                             title.DateTimes.Add(DateTime, strliege);
                         }
                         isChina = strliege == rootTitle;
-                        title.lieges.Add(DateTime, strliege);
+                        if (strliege == rootTitle && title.liege != null)
+                        {
+                            if (title.TitleType == TitleType.Count)
+                            {
+                                title.lieges.Add(DateTime, title.liege.name);
+                            }
+                            else
+                            {
+                                title.lieges.Add(DateTime, rootTitle);
+                            }
+                        }
+                        else
+                        {
+                            title.lieges.Add(DateTime, strliege);
+                        }
                     }
                     else
                     {

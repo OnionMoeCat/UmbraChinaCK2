@@ -14,13 +14,16 @@ namespace UmbraChinaCK2
         static string rootNode = "e_china";
         static int dynastyNum = 0;
         static int personNum = 0;
-        static int minInterval = 12;
-        static int maxInterval = 20;
-        static int minElectedAge = 18;
-        static int maxElectedAge = 50;
-        static int maxDeathTime = 80;
+        static int minInterval = 20;
+        static int maxInterval = 30;
+        static int minElectedAge = 17;
+        static int maxElectedAge = 30;
+        static int maxDeathTime = 60;
         static int adultYear = 16;
         static string han = "han";
+        static string tao = "tao";
+        static string confucian = "confucian";
+        static DateTime taoToConfucian = new DateTime(930, 1, 1);
 
         public static void GenCount()
         {            
@@ -127,8 +130,8 @@ namespace UmbraChinaCK2
             Person father = null;
             while (currentDateTime < i_endDateTime)
             {
-                int intervalYears = Rnd.rnd.Next(minInterval, maxInterval + 1);
-                DateTime afterTime = currentDateTime.AddYears(intervalYears);
+                int intervalYears = Rnd.rnd.Next(minInterval, maxInterval + 1);                
+                DateTime afterTime = new DateTime(currentDateTime.Year + intervalYears, Rnd.rnd.Next(1, 13), Rnd.rnd.Next(1, 29));
                 Person person = GenPerson(dynasty, father, currentDateTime, afterTime);
                 title.history.Add(currentDateTime, person);
                 currentDateTime = afterTime;
@@ -150,8 +153,16 @@ namespace UmbraChinaCK2
         }
 
         public static Person GenPerson(Dynasty i_dynasty, Person i_father, DateTime i_beginDateTime, DateTime i_endDateTime)
-        {
+        {        
             Person person = new Person();
+            if (i_beginDateTime > taoToConfucian)
+            {
+                person.religion = confucian;
+            }
+            else
+            {
+                person.religion = tao;
+            }
             person.father = i_father;
             person.name = new Name();
             person.name.first = Name.RandomName();
@@ -160,12 +171,19 @@ namespace UmbraChinaCK2
             {
                 DateTime fatherBorn = i_father.born;
                 DateTime minBornTime = i_father.born.AddYears(adultYear);
-                born = new DateTime(Math.Max(born.Ticks, minBornTime.Ticks));
+                if (minBornTime > born)
+                {
+                    born = new DateTime(Rnd.rnd.Next(minBornTime.Year + 1, minBornTime.Year + 1 + 5), Rnd.rnd.Next(1, 13), Rnd.rnd.Next(1, 29));
+                    born = new DateTime(Math.Min(born.Ticks, i_father.die.AddDays(-1).Ticks));
+                    born = new DateTime(Math.Min(born.Ticks, i_beginDateTime.AddYears(-16).Ticks));                    
+                }
                 i_father.children.Add(person);
             }
             DateTime maxTime = born.AddYears(maxDeathTime);
             DateTime die = new DateTime(Rnd.rnd.Next(i_endDateTime.Year, maxTime.Year + 1), Rnd.rnd.Next(1, 13), Rnd.rnd.Next(1, 29));
-            die = new DateTime(Math.Max(die.Ticks, i_endDateTime.Ticks));
+            die = new DateTime(Math.Max(die.Ticks, i_endDateTime.AddDays(1).Ticks));
+            Debug.Assert(i_father == null || born < i_father.die);
+            Debug.Assert(born.AddYears(adultYear) <= i_beginDateTime);
             Debug.Assert(die >= i_endDateTime);
             person.born = born;
             person.die = die;

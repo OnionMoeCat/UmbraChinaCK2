@@ -15,7 +15,9 @@ namespace UmbraChinaCK2
             LoadTitles.LoadTitlesFromFile(Path.Combine(basePath, "Umbra Spherae/common/landed_titles/US_China.txt"));
             LoadHistories.LoadHistoriesFromFolder(Path.Combine(basePath, "Umbra Spherae/history/titles"));
             LoadDynasties.LoadDynastiesFromFile(Path.Combine(basePath, "Umbra Spherae/common/dynasties/china_pinyin.txt"));
-            Process.CalculateInterval();
+            Process.CalculateInterval(TitleType.Count);
+            Process.CalculateInterval(TitleType.Duke);
+            Process.CalculateInterval(TitleType.King);
             GenerateDynasties.GenCount();
             GenerateDynasties.GenDuke();
             GenerateDynasties.GenKing();

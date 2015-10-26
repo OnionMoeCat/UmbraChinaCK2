@@ -43,6 +43,7 @@ namespace UmbraChinaCK2
         public DateTime born;
         public DateTime die;
         public Name name;
+        public string religion;
         public Dynasty dynasty
         {
             get
